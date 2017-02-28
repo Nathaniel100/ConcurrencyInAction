@@ -14,4 +14,4 @@ add_executable(PackagedTask packaged_task.cpp)
 
 add_executable(Promise promise.cpp)
 
-add_executable(SequentialQuickSort sequential_quick_sort.cpp)
+add_executable(ListQuickSort list_quick_sort.cpp)
