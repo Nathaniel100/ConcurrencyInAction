@@ -29,7 +29,7 @@ int main() {
 
     t1.join();
     t2.join();
-    assert(z != 0); // can fire
+    assert(z.load() != 0); // can fire
     return 0;
 }
 

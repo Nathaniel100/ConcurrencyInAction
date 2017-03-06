@@ -13,3 +13,7 @@ add_executable(RelaxedFull relaxed_full.cpp)
 add_executable(AcquireRelease1 acquire_release1.cpp)
 
 add_executable(AcquireRelease2 acquire_release2.cpp)
+
+add_executable(Consume consume.cpp)
+
+add_executable(Fence fence.cpp)
