@@ -26,7 +26,7 @@ template<class T>
 std::shared_ptr<T> threadsafe_stack<T>::pop() {
     std::lock_guard<std::mutex> lock(mutex_);
     if(stack_.empty()) throw empty_stack();
-    std::shared_ptr<T> p = std::make_shared<T>(stack_.top());
+    std::shared_ptr<T> p = std::make_shared<T>(std::move(stack_.top()));
     stack_.pop();
     return p;
 }
@@ -35,7 +35,7 @@ template<class T>
 void threadsafe_stack<T>::pop(T &t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if(stack_.empty()) throw empty_stack();
-    t = stack_.top();
+    t = std::move(stack_.top());
     stack_.pop();
 }
 

@@ -14,24 +14,24 @@ threadsafe_queue<T>::threadsafe_queue() {
 template<class T>
 void threadsafe_queue<T>::push(T data) {
     std::lock_guard<std::mutex> lock(mutex_);
-    queue_.push(data);
+    queue_.push(std::move(data));
     cond_.notify_one();
 }
 
 template<class T>
 std::shared_ptr<T> threadsafe_queue<T>::try_pop() {
     std::lock_guard<std::mutex> lock(mutex_);
-    if(queue_.empty()) return nullptr;
-    T res = queue_.front();
+    if(queue_.empty()) return std::shared_ptr<T>();
+    std::shared_ptr<T> res(std::make_shared<T>(std::move(queue_.front())));
     queue_.pop();
-    return std::make_shared<T>(res);
+    return res;
 }
 
 template<class T>
 bool threadsafe_queue<T>::try_pop(T &t) {
     std::lock_guard<std::mutex> lock(mutex_);
     if(queue_.empty()) return false;
-    t = queue_.front();
+    t = std::move(queue_.front());
     queue_.pop();
     return true;
 }
@@ -40,16 +40,16 @@ template<class T>
 std::shared_ptr<T> threadsafe_queue<T>::wait_then_pop() {
     std::unique_lock<std::mutex> lock(mutex_);
     cond_.wait(lock, [this]{return !queue_.empty();});
-    T res = queue_.front();
+    std::shared_ptr<T> res(std::make_shared(std::move(queue_.front())));
     queue_.pop();
-    return std::make_shared(res);
+    return res;
 }
 
 template<class T>
 void threadsafe_queue<T>::wait_then_pop(T &t) {
     std::unique_lock<std::mutex> lock(mutex_);
     cond_.wait(lock, [this]{return !queue_.empty();});
-    t = queue_.front();
+    t = std::move(queue_.front());
     queue_.pop();
 }
 
