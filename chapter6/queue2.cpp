@@ -24,7 +24,7 @@ public:
     std::shared_ptr<T> try_pop() {
         if(tail_ == head_.get()) return std::shared_ptr<T>();
         std::shared_ptr<T> res(head_->data_);
-        const std::unique_ptr<T> old_head = std::move(head_);
+        const std::unique_ptr<node> old_head = std::move(head_);
         head_ = std::move(old_head->next_);
         return res;
     }
