@@ -9,6 +9,8 @@
 #include <thread>
 #include "../nocopyable.h"
 
+// upgrade from queue2
+
 template<class T>
 class threadsafe_queue : protected nocopyable{
 private:

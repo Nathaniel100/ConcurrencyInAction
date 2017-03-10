@@ -11,6 +11,7 @@
 #include <thread>
 #include "../nocopyable.h"
 
+// wrap std::queue
 template<class T>
 class threadsafe_queue : protected nocopyable{
 public:
